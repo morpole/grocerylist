@@ -55,6 +55,8 @@ function addItem(e) {
     } else if(value && editFlag) {
         editElement.innerHTML = value;
         displayAlert('value changed', 'success');
+        //edit local storage
+        editLocalStorage(editID, value);
         setBackToDefault();
     } else {
         displayAlert('please enter a value','danger');
@@ -95,7 +97,7 @@ function deleteItem(e) {
     displayAlert('item removed', 'danger');
     setBackToDefault();
     //remove from local storage
-    //removeFromLocalStorage(id);
+    removeFromLocalStorage(id);
 }
 //edit function
 function editItem(e) {
@@ -118,7 +120,38 @@ function setBackToDefault() {
 }
 // ****** LOCAL STORAGE **********
 function addToLocalStorage(id, value) {
-    console.log('added to local storage');
+    const grocery = {id:id, value:value};
+    let items = getLocalStorage();
+    console.log(items);
+
+    items.push(grocery);
+    localStorage.setItem('list', JSON.stringify(items));
 }; 
+function removeFromLocalStorage(id) {
+    let items = getLocalStorage();
+
+    items = items.filter(function(item){
+        if(item.id !== id){
+            return item
+        }
+        //console.log(items);
+    });
+    
+    localStorage.setItem('list', JSON.stringify(items));
+};
+
+function editLocalStorage(id, value) {};
+function getLocalStorage() {
+    return localStorage.getItem('list')? JSON.parse(localStorage.getItem('list')):[];
+}
+//local storage API
+// setItem
+//getItem
+//removeItem
+//save as strings
+
+// localStorage.setItem('orange', JSON.stringify(['number one', 'big balls','mighty balls']));
+// const mamma = JSON.parse(localStorage.getItem('orange'))
+// console.log(mamma[1]);
 // ****** SETUP ITEMS **********
  
